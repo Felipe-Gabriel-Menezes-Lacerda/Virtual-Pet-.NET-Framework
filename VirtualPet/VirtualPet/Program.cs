@@ -24,8 +24,7 @@ namespace VirtualPet
             if (petExists)
             {
                 StartGame(petName, petOwner, ref petHunger, ref petHappiness, ref petCleanliness);
-                Console.WriteLine("Muito obrigado por cuidar do seu bichinho!!!");
-                Console.WriteLine();
+                
             }
             else
             {
@@ -37,8 +36,7 @@ namespace VirtualPet
                 petExists = CreateNewGame(petName, petOwner, petHunger, petHappiness, petCleanliness);
                 
                 StartGame(petName, petOwner, ref petHunger, ref petHappiness, ref petCleanliness);
-                Console.WriteLine("Muito obrigado por cuidar do seu bichinho!!!");
-                Console.WriteLine();
+                
             }
 
         }
@@ -60,7 +58,7 @@ namespace VirtualPet
             Console.Clear();
 
             Console.WriteLine($"Olá {petOwner}, senti sua falta!!!");
-            while (userEntry != "4")
+            while (userEntry != "5")
             {
                 petStatus = random.Next(3);
                 switch (petStatus)
@@ -82,7 +80,8 @@ namespace VirtualPet
                 Console.WriteLine("2.Comer");
                 Console.WriteLine("3.Tomar banho");
                 Console.WriteLine("4.Nada");
-                Console.Write("Digite o número da opção desejada e clique a tecla 'Enter' para prosseguir: ");
+                Console.WriteLine("5.Sair do jogo");
+                Console.Write("Digite o número da opção desejada: ");
                 userEntry = Console.ReadLine();
 
                 switch (userEntry)
@@ -101,9 +100,12 @@ namespace VirtualPet
                 if(petHappiness > 100) { petHappiness = 100; }
                 if(petCleanliness > 100) { petCleanliness = 100; }
 
-                if (petHunger < 60 && petHunger > 20) Console.WriteLine("Que fome, nada melhor que um lanchinho");
-                if (petHappiness < 60 && petHappiness > 20) Console.WriteLine("Estou tão desanimado, nada melhor do que brincar");
-                if (petCleanliness < 60 && petCleanliness > 20) Console.WriteLine("Estou tão sujo, nada melhor que um banho");
+                if (petHunger < 60 && petHunger > 20) 
+                    Console.WriteLine("Que fome, nada melhor que um lanchinho");
+                if (petHappiness < 60 && petHappiness > 20) 
+                    Console.WriteLine("Estou tão desanimado, nada melhor do que brincar");
+                if (petCleanliness < 60 && petCleanliness > 20) 
+                    Console.WriteLine("Estou tão sujo, nada melhor que um banho");
                 
                 if (!(petHunger < 60 && petHunger > 20) && 
                     !(petHappiness < 60 && petHappiness > 20) && 
@@ -112,19 +114,35 @@ namespace VirtualPet
                     Console.WriteLine(petConversation[random.Next(petConversation.Length)]);
                 }
 
-                Thread.Sleep(2000);
+                Thread.Sleep(3000);
 
             }
+
+            EndGame(petOwner, petHunger, petHappiness,petCleanliness);
 
             
 
         }
 
-        static bool CreateNewGame
+        public static bool CreateNewGame
         (string petName, string petOwner, int petHunger, int petHappiness, int petCleanliness) 
         {
             bool petExists = true;
             return petExists;
+
+        }
+        public static void EndGame(string petOwner, int petHunger, int petHappiness, int petCleanliness)
+        {
+          if(petHunger <= 0 || petHappiness <= 0 || petCleanliness <= 0)
+            {
+                Console.WriteLine($"{petOwner}, que descuido, estou muito maltratado, fui embora, em busca de um dono melhor!!");
+                Console.WriteLine("Cuide melhor do seu próximo bichinho");
+            }
+            else
+            {
+                Console.WriteLine("Obrigado por cuidar do seu bichinho");
+                Console.WriteLine($"{petOwner}, volte logo!!!");
+            }
 
         }
 
