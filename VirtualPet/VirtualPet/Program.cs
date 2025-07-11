@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading;
+using System.IO;
 
 namespace VirtualPet
 {
@@ -16,24 +17,47 @@ namespace VirtualPet
             int petCleanliness = 100;
             //int petStatus = 0;
 
-            bool petExists = false;
-
             //Random random = new Random();
 
+            Console.Write("Qual o nome do seu bichinho?: ");
+            petName = Console.ReadLine();
+            Console.Write($"Qual o nome do dono do {petName}?: ");
+            petOwner = Console.ReadLine();
+
+            string filePath = "C:\\" + petName + petOwner + ".txt"; 
+
             Console.WriteLine("Olá, seja bem vindo ao 'Meu bichinho virtual'");
-            if (petExists)
+            if (File.Exists(filePath))
             {
+                string[] petData = File.ReadAllLines(filePath);
+                petName = petData[0];
+                petOwner = petData[1];
+                petHunger = Convert.ToInt32(petData[2]);
+                petHappiness = Convert.ToInt32(petData[3]);
+                petCleanliness = Convert.ToInt32(petData[4]);
+
+                if(petHunger <=0 || petHappiness <= 0 || petHappiness <= 0)
+                {
+                    Console.WriteLine("Assistente virtual");
+                    Console.WriteLine("Nós analisamos o estado do seu bichinho, e" +
+                        " percebemos que seu bichinho está muito mal tratado.");
+                    Console.WriteLine("Nós iremos cuidar dele por você..");
+                    petHunger = 100;
+                    petHappiness = 100;
+                    petCleanliness = 100;
+
+                    Console.WriteLine("Pronto, seu bichinho está novinho em folha");
+
+                }
+                
                 StartGame(petName, petOwner, ref petHunger, ref petHappiness, ref petCleanliness);
                 
             }
             else
             {
-                Console.Write("Qual o nome do seu bichinho?: ");
-                petName = Console.ReadLine();
-                Console.Write($"Qual o nome do dono do {petName}?: ");
-                petOwner = Console.ReadLine();
+              
 
-                petExists = CreateNewGame(petName, petOwner, petHunger, petHappiness, petCleanliness);
+                CreateNewGame(petName, petOwner, petHunger, petHappiness, petCleanliness);
                 
                 StartGame(petName, petOwner, ref petHunger, ref petHappiness, ref petCleanliness);
                 
@@ -124,12 +148,10 @@ namespace VirtualPet
 
         }
 
-        public static bool CreateNewGame
+        public static void CreateNewGame
         (string petName, string petOwner, int petHunger, int petHappiness, int petCleanliness) 
         {
-            bool petExists = true;
-            return petExists;
-
+            StartGame(petName, petOwner, ref petHunger, ref petHappiness, ref petCleanliness);
         }
         public static void EndGame(string petOwner, int petHunger, int petHappiness, int petCleanliness)
         {
